@@ -112,13 +112,13 @@
       font-size: 1.4rem;
       color: #ffbd69;
     }
-
-    /* Confetti effect */
     .confetti {
       pointer-events: none;
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      top: 0; 
+      left: 0;
+      width: 100%; 
+      height: 100%;
       z-index: 9999;
     }
   </style>
@@ -143,7 +143,7 @@
     <label><input type="radio" name="ans1" value="C"> Kleine hersenen</label>
     <label><input type="radio" name="ans1" value="D"> Hersenstam</label>
   </div>
-  <button onclick="checkAnswer(1)">Stuur</button>
+  <button id="btn1" onclick="checkAnswer(1)">Stuur</button>
   <p class="feedback" id="feedback1"></p>
   <button class="next-btn hidden" id="next1" onclick="nextQuestion(3)">Volgende</button>
 </div>
@@ -158,7 +158,7 @@
     <label><input type="radio" name="ans3" value="C"> Ziekte van Parkinson</label>
     <label><input type="radio" name="ans3" value="D"> Herseninfarct</label>
   </div>
-  <button onclick="checkAnswer(3)">Stuur</button>
+  <button id="btn3" onclick="checkAnswer(3)">Stuur</button>
   <p class="feedback" id="feedback3"></p>
   <button class="next-btn hidden" id="next3" onclick="nextQuestion(4)">Volgende</button>
 </div>
@@ -173,7 +173,7 @@
     <label><input type="radio" name="ans4" value="C"> Normale hersenactiviteit</label>
     <label><input type="radio" name="ans4" value="D"> Gebroken schedel</label>
   </div>
-  <button onclick="checkAnswer(4)">Stuur</button>
+  <button id="btn4" onclick="checkAnswer(4)">Stuur</button>
   <p class="feedback" id="feedback4"></p>
   <button class="next-btn hidden" id="next4" onclick="nextQuestion(5)">Volgende</button>
 </div>
@@ -188,7 +188,7 @@
     <label><input type="radio" name="ans5" value="C"> Zijn tong vastpakken</label>
     <label><input type="radio" name="ans5" value="D"> Direct medicijnen toedienen</label>
   </div>
-  <button onclick="checkAnswer(5)">Stuur</button>
+  <button id="btn5" onclick="checkAnswer(5)">Stuur</button>
   <p class="feedback" id="feedback5"></p>
   <button class="next-btn hidden" id="next5" onclick="nextQuestion(6)">Volgende</button>
 </div>
@@ -203,7 +203,7 @@
     <label><input type="radio" name="ans6" value="C"> "Ik heb hier geen tijd voor, je moet het accepteren."</label>
     <label><input type="radio" name="ans6" value="D"> "Je moet gewoon positief denken."</label>
   </div>
-  <button onclick="checkAnswer(6)">Stuur</button>
+  <button id="btn6" onclick="checkAnswer(6)">Stuur</button>
   <p class="feedback" id="feedback6"></p>
   <button class="next-btn hidden" id="next6" onclick="nextQuestion(7)">Volgende</button>
 </div>
@@ -218,7 +218,7 @@
     <label><input type="radio" name="ans7" value="C"> Motorische cortex</label>
     <label><input type="radio" name="ans7" value="D"> Hersenstam</label>
   </div>
-  <button onclick="checkAnswer(7)">Stuur</button>
+  <button id="btn7" onclick="checkAnswer(7)">Stuur</button>
   <p class="feedback" id="feedback7"></p>
   <button class="next-btn hidden" id="next7" onclick="nextQuestion(8)">Volgende</button>
 </div>
@@ -233,7 +233,7 @@
     <label><input type="radio" name="ans8" value="C"> Kalmeringsmiddelen geven</label>
     <label><input type="radio" name="ans8" value="D"> De patiënt naar huis sturen</label>
   </div>
-  <button onclick="checkAnswer(8)">Stuur</button>
+  <button id="btn8" onclick="checkAnswer(8)">Stuur</button>
   <p class="feedback" id="feedback8"></p>
   <button class="next-btn hidden" id="next8" onclick="nextQuestion(9)">Volgende</button>
 </div>
@@ -248,7 +248,7 @@
     <label><input type="radio" name="ans9" value="C"> Hersenstam</label>
     <label><input type="radio" name="ans9" value="D"> Motorische cortex</label>
   </div>
-  <button onclick="checkAnswer(9)">Stuur</button>
+  <button id="btn9" onclick="checkAnswer(9)">Stuur</button>
   <p class="feedback" id="feedback9"></p>
   <button class="next-btn hidden" id="next9" onclick="nextQuestion(10)">Volgende</button>
 </div>
@@ -263,7 +263,7 @@
     <label><input type="radio" name="ans10" value="C"> Zo kort mogelijk, ‘time is money’</label>
     <label><input type="radio" name="ans10" value="D"> Laat de patiënt zelf opzoeken wat het betekent</label>
   </div>
-  <button onclick="checkAnswer(10)">Stuur</button>
+  <button id="btn10" onclick="checkAnswer(10)">Stuur</button>
   <p class="feedback" id="feedback10"></p>
   <button class="next-btn hidden" id="next10" onclick="nextQuestion(11)">Volgende</button>
 </div>
@@ -278,7 +278,7 @@
     <label><input type="radio" name="ans11" value="C"> Migraine</label>
     <label><input type="radio" name="ans11" value="D"> Hersenbloeding</label>
   </div>
-  <button onclick="checkAnswer(11)">Stuur</button>
+  <button id="btn11" onclick="checkAnswer(11)">Stuur</button>
   <p class="feedback" id="feedback11"></p>
   <button class="next-btn hidden" id="next11" onclick="nextQuestion(12)">Volgende</button>
 </div>
@@ -293,7 +293,7 @@
     <label><input type="radio" name="ans12" value="C"> Occipitaalkwab</label>
     <label><input type="radio" name="ans12" value="D"> Kleine hersenen</label>
   </div>
-  <button onclick="checkAnswer(12)">Stuur</button>
+  <button id="btn12" onclick="checkAnswer(12)">Stuur</button>
   <p class="feedback" id="feedback12"></p>
   <button class="next-btn hidden" id="next12" onclick="finish()">Klaar</button>
 </div>
@@ -326,22 +326,22 @@ let answers = {
 let explanations = {
   1:"Linkerhersenhelft bestuurt de rechterkant van het lichaam en bevat spraakgebieden.",
   3:"Migraine is vaak gekoppeld aan hoofdpijn, misselijkheid en lichtgevoeligheid.",
-  4:"Een donkere vlek duidt meestal op een bloedprop in de frontale kwab.",
+  4:"Een donkere vlek duidt vaak op een bloedprop in de frontale kwab.",
   5:"Eerst zorgen dat de patiënt zich niet bezeert is de belangrijkste stap.",
   6:"Empathische communicatie is cruciaal; laat de patiënt weten dat je er voor hen bent.",
   7:"De hippocampus is vaak als eerste aangetast bij Alzheimer.",
-  8:"Bij verlamming aan één kant is een scan nodig om bijv. een beroerte uit te sluiten.",
-  9:"Kleine hersenen regelen coördinatie en balans; problemen hiermee veroorzaken ongecontroleerde bewegingen.",
-  10:"Eenvoudige taal en voorbeelden zijn belangrijk om een patiënt gerust te stellen.",
-  11:"Een abnormaal patroon in de frontale kwab op een EEG wijst vaak op epileptische activiteit.",
-  12:"Broca’s gebied is essentieel voor spraakproductie. Bij beschadiging herhaalt men soms woorden."
+  8:"Bij verlamming aan één kant is een scan nodig om een mogelijke beroerte uit te sluiten.",
+  9:"De kleine hersenen regelen coördinatie en balans; letsel veroorzaakt ongecontroleerde bewegingen.",
+  10:"Eenvoudige taal en voorbeelden helpen de patiënt beter te begrijpen en gerust te stellen.",
+  11:"Een abnormaal EEG-patroon in de frontale kwab wijst vaak op epilepsie.",
+  12:"Broca’s gebied is essentieel voor spraakproductie. Bij beschadiging kan repetitief taalgebruik voorkomen."
 };
 
 function startQuiz() {
   document.getElementById("startPage").classList.add("hidden");
   currentQuestion = 1;
   showQuestion(currentQuestion);
-  startTimer("timer1");
+  startTimer(currentQuestion);
 }
 
 function showQuestion(q) {
@@ -352,8 +352,9 @@ function hideQuestion(q) {
   document.getElementById("q" + q).classList.add("hidden");
 }
 
-function startTimer(timerId) {
+function startTimer(q) {
   timeLeft = 60;
+  let timerId = "timer" + q;
   document.getElementById(timerId).textContent = "Tijd: " + timeLeft + "s";
   clearInterval(interval);
   interval = setInterval(function(){
@@ -363,8 +364,31 @@ function startTimer(timerId) {
     } else {
       clearInterval(interval);
       document.getElementById(timerId).textContent = "Tijd is op!";
+      timeIsUp(q);
     }
   }, 1000);
+}
+
+function timeIsUp(q) {
+  let fb = document.getElementById("feedback" + q);
+  if(!answers[q]) {
+    fb.textContent = "Tijd is op! Geen antwoord geregistreerd.";
+  } else {
+    fb.innerHTML = '<span class="wrong">Te laat!</span> <div class="explanation">Het juiste antwoord is: ' 
+      + answers[q] + '.<br>' + explanations[q] + '</div>';
+    highlightCorrect(q);
+  }
+  disableQuestion(q);
+  document.getElementById("next" + q).classList.remove("hidden");
+}
+
+function disableQuestion(q) {
+  let radios = document.getElementsByName("ans" + q);
+  for (let i = 0; i < radios.length; i++) {
+    radios[i].disabled = true;
+  }
+  let btn = document.getElementById("btn" + q);
+  if(btn) btn.disabled = true;
 }
 
 function checkAnswer(q) {
@@ -379,18 +403,10 @@ function checkAnswer(q) {
   }
   if (!chosen) {
     alert("Je moet een antwoord selecteren!");
-    startTimer("timer" + q);
+    startTimer(q);
     return;
   }
   let fb = document.getElementById("feedback" + q);
-  let opts = document.getElementById("options" + q).getElementsByTagName("label");
-
-  for (let i = 0; i < opts.length; i++) {
-    let input = opts[i].querySelector("input");
-    opts[i].style.fontWeight = "normal";
-    opts[i].classList.remove("highlight-correct");
-  }
-
   if (answers[q]) {
     if (chosen === answers[q]) {
       fb.innerHTML = '<span class="correct">Juist! 🎉</span> <div class="explanation">'+ explanations[q] +'</div>';
@@ -404,6 +420,7 @@ function checkAnswer(q) {
   } else {
     fb.textContent = "Antwoord geregistreerd.";
   }
+  disableQuestion(q);
   document.getElementById("next" + q).classList.remove("hidden");
 }
 
@@ -421,7 +438,7 @@ function nextQuestion(n) {
   hideQuestion(currentQuestion);
   currentQuestion = n;
   showQuestion(n);
-  startTimer("timer" + n);
+  startTimer(n);
 }
 
 /* Minimal confetti effect for fun */
@@ -481,4 +498,3 @@ function finish() {
 
 </body>
 </html>
-
