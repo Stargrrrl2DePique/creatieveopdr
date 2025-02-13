@@ -4,91 +4,140 @@
   <meta charset="UTF-8">
   <title>NeuroSkills Quiz</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
-      color: #333;
+      background: #222;
+      color: #fefefe;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      align-items: center;
     }
     header {
-      background: rgba(0, 0, 0, 0.3);
+      width: 100%;
+      background: linear-gradient(90deg, #a90e7c, #ff5b00);
       padding: 2rem;
       text-align: center;
+      font-size: 1.6rem;
+      font-weight: bold;
       color: #fff;
-    }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
+      letter-spacing: 1px;
     }
     .container {
-      background: #fff;
+      width: 90%;
       max-width: 600px;
-      margin: 2rem auto;
+      background: #333;
+      margin: 2rem 0;
       padding: 2rem;
       border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      position: relative;
     }
-    h2 { color: #444; margin-bottom: 1rem; }
-    p { margin-bottom: 1rem; line-height: 1.4; }
+    h2 {
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      color: #ffbd69;
+      text-shadow: 0 0 3px #fff;
+    }
+    p {
+      margin-bottom: 1rem;
+      line-height: 1.4;
+      color: #ddd;
+    }
+    .options {
+      margin: 1rem 0;
+    }
     .options label {
       display: block;
       margin: 0.5rem 0;
       cursor: pointer;
+      transition: 0.2s all ease-in-out;
+    }
+    .options input[type="radio"] {
+      margin-right: 0.6rem;
+    }
+    button {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.7rem 1.2rem;
+      border: none;
+      border-radius: 5px;
+      background: #a90e7c;
+      color: #fff;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #ff5b00;
     }
     .timer {
       text-align: right;
       font-weight: bold;
       margin-bottom: 1rem;
-      color: #444;
+      color: #ccc;
     }
     .feedback {
-      margin: 0.8rem 0;
+      margin: 1rem 0;
       font-weight: bold;
     }
-    button {
-      padding: 0.7rem 1.2rem;
-      border: none;
-      border-radius: 5px;
-      background: #4f65c0;
-      color: #fff;
-      cursor: pointer;
-      margin-top: 1rem;
-      font-size: 1rem;
+    .correct {
+      color: #6aff75;
     }
-    button:hover {
-      background: #3e4da2;
+    .wrong {
+      color: #ff7373;
     }
-    .hidden { display: none; }
-    #result h2 { margin-bottom: 1rem; }
+    .explanation {
+      margin: 0.5rem 0 0.5rem 0;
+      color: #ccc;
+      font-style: italic;
+    }
+    .hidden {
+      display: none;
+    }
+    .highlight-correct {
+      color: #6aff75;
+      font-weight: bold;
+    }
+    .container .next-btn {
+      float: right;
+    }
+    #result h2 {
+      margin-bottom: 1rem;
+      font-size: 1.4rem;
+      color: #ffbd69;
+    }
+
+    /* Confetti effect */
+    .confetti {
+      pointer-events: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 9999;
+    }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>NeuroSkills Quiz</h1>
-  <p>Heb jij wat nodig is om neuroloog te worden?</p>
-</header>
+<header>NeuroSkills Quiz</header>
+
+<canvas class="confetti hidden" id="confettiCanvas"></canvas>
 
 <div class="container" id="startPage">
-  <h2>Beschrijving</h2>
-  <p>
-    Een interactieve quiz die vaardigheden en kennis test die belangrijk zijn in de neurologie. 
-    Je krijgt meerkeuzevragen, observatievragen en probleemoplossende vragen die logisch denken stimuleren. 
-    Daarnaast wordt er gelet op communicatie en empathie.
-  </p>
-  <button onclick="startQuiz()">Start Quiz</button>
+  <button onclick="startQuiz()">START QUIZ</button>
 </div>
 
 <div class="container hidden" id="q1">
   <div class="timer" id="timer1"></div>
-  <h2>1. Een patiënt heeft moeite met praten en bewegen aan de rechterkant van zijn lichaam. Welk hersendeel is waarschijnlijk beschadigd?</h2>
-  <p>
-    (Kennisvraag - test de basis over lateralisatie in de hersenen)
-  </p>
-  <div class="options">
+  <h2>1. Een patiënt heeft moeite met praten en bewegen aan de rechterkant. Welk hersendeel is waarschijnlijk beschadigd?</h2>
+  <p>(Kennisvraag - test de basis over lateralisatie in de hersenen)</p>
+  <div class="options" id="options1">
     <label><input type="radio" name="ans1" value="A"> Linkerhersenhelft</label>
     <label><input type="radio" name="ans1" value="B"> Rechterhersenhelft</label>
     <label><input type="radio" name="ans1" value="C"> Kleine hersenen</label>
@@ -96,16 +145,14 @@
   </div>
   <button onclick="checkAnswer(1)">Stuur</button>
   <p class="feedback" id="feedback1"></p>
-  <button onclick="nextQuestion(3)" class="hidden" id="next1">Volgende</button>
+  <button class="next-btn hidden" id="next1" onclick="nextQuestion(3)">Volgende</button>
 </div>
 
 <div class="container hidden" id="q3">
   <div class="timer" id="timer3"></div>
-  <h2>3. Een patiënt komt binnen met extreme hoofdpijn, misselijkheid en gevoeligheid voor licht. Wat is de meest waarschijnlijke diagnose?</h2>
-  <p>
-    (Probleemoplossing & logisch denken - herkenning van symptomen)
-  </p>
-  <div class="options">
+  <h2>3. Extreme hoofdpijn, misselijkheid en gevoeligheid voor licht. Wat is de meest waarschijnlijke diagnose?</h2>
+  <p>(Probleemoplossing & logisch denken - herkenning van symptomen)</p>
+  <div class="options" id="options3">
     <label><input type="radio" name="ans3" value="A"> Migraine</label>
     <label><input type="radio" name="ans3" value="B"> Epilepsie</label>
     <label><input type="radio" name="ans3" value="C"> Ziekte van Parkinson</label>
@@ -113,17 +160,14 @@
   </div>
   <button onclick="checkAnswer(3)">Stuur</button>
   <p class="feedback" id="feedback3"></p>
-  <button onclick="nextQuestion(4)" class="hidden" id="next3">Volgende</button>
+  <button class="next-btn hidden" id="next3" onclick="nextQuestion(4)">Volgende</button>
 </div>
 
 <div class="container hidden" id="q4">
   <div class="timer" id="timer4"></div>
   <h2>4. Je ziet een MRI-scan met een donkere vlek in de frontale kwab. Wat betekent dit waarschijnlijk?</h2>
-  <p>
-    MRI-scan: Een MRI-scan is een medisch onderzoek waarbij foto’s worden gemaakt van doorsneden van het lichaam.
-    (Observatie & patroonherkenning - interpretatie van een scan)
-  </p>
-  <div class="options">
+  <p>MRI-scan: Een medisch onderzoek waarbij foto’s worden gemaakt van doorsneden van het lichaam (Observatie & patroonherkenning)</p>
+  <div class="options" id="options4">
     <label><input type="radio" name="ans4" value="A"> Bloedprop (beroerte)</label>
     <label><input type="radio" name="ans4" value="B"> Verhoogde activiteit</label>
     <label><input type="radio" name="ans4" value="C"> Normale hersenactiviteit</label>
@@ -131,16 +175,14 @@
   </div>
   <button onclick="checkAnswer(4)">Stuur</button>
   <p class="feedback" id="feedback4"></p>
-  <button onclick="nextQuestion(5)" class="hidden" id="next4">Volgende</button>
+  <button class="next-btn hidden" id="next4" onclick="nextQuestion(5)">Volgende</button>
 </div>
 
 <div class="container hidden" id="q5">
   <div class="timer" id="timer5"></div>
   <h2>5. Een patiënt krijgt een epileptische aanval. Wat doe je als eerste?</h2>
-  <p>
-    (Probleemoplossing & eerste hulp bij een aanval)
-  </p>
-  <div class="options">
+  <p>(Probleemoplossing - eerste hulp bij een aanval)</p>
+  <div class="options" id="options5">
     <label><input type="radio" name="ans5" value="A"> Zorgen dat hij zich niet bezeert</label>
     <label><input type="radio" name="ans5" value="B"> Water geven</label>
     <label><input type="radio" name="ans5" value="C"> Zijn tong vastpakken</label>
@@ -148,17 +190,14 @@
   </div>
   <button onclick="checkAnswer(5)">Stuur</button>
   <p class="feedback" id="feedback5"></p>
-  <button onclick="nextQuestion(6)" class="hidden" id="next5">Volgende</button>
+  <button class="next-btn hidden" id="next5" onclick="nextQuestion(6)">Volgende</button>
 </div>
 
 <div class="container hidden" id="q6">
   <div class="timer" id="timer6"></div>
   <h2>6. Een patiënt is erg bang na de diagnose van ALS. Hoe reageer je?</h2>
-  <p>
-    ALS (amyotrofische laterale sclerose) is een progressieve ziekte van de zenuwcellen waarbij de spieren geleidelijk uitvallen.
-    (Communicatie & empathie - omgaan met een onzekere patiënt)
-  </p>
-  <div class="options">
+  <p>(Communicatie & empathie - omgaan met een onzekere patiënt)</p>
+  <div class="options" id="options6">
     <label><input type="radio" name="ans6" value="A"> "Ik begrijp dat dit beangstigend is. We gaan samen een behandelplan opstellen."</label>
     <label><input type="radio" name="ans6" value="B"> "Maak je geen zorgen, het komt wel goed."</label>
     <label><input type="radio" name="ans6" value="C"> "Ik heb hier geen tijd voor, je moet het accepteren."</label>
@@ -166,17 +205,14 @@
   </div>
   <button onclick="checkAnswer(6)">Stuur</button>
   <p class="feedback" id="feedback6"></p>
-  <button onclick="nextQuestion(7)" class="hidden" id="next6">Volgende</button>
+  <button class="next-btn hidden" id="next6" onclick="nextQuestion(7)">Volgende</button>
 </div>
 
 <div class="container hidden" id="q7">
   <div class="timer" id="timer7"></div>
   <h2>7. Een scan toont het eerste gebied waar Alzheimer meestal begint. Welk gebied is dat?</h2>
-  <p>
-    Het eerste gebied waar het aantal hersencellen afneemt is vaak de hippocampus, belangrijk voor het geheugen.
-    (Observatie & kennis over Alzheimer)
-  </p>
-  <div class="options">
+  <p>(Observatie & kennis over Alzheimer - Hippocampus is vaak het eerste aangedane deel)</p>
+  <div class="options" id="options7">
     <label><input type="radio" name="ans7" value="A"> Hippocampus</label>
     <label><input type="radio" name="ans7" value="B"> Frontaalkwab</label>
     <label><input type="radio" name="ans7" value="C"> Motorische cortex</label>
@@ -184,16 +220,14 @@
   </div>
   <button onclick="checkAnswer(7)">Stuur</button>
   <p class="feedback" id="feedback7"></p>
-  <button onclick="nextQuestion(8)" class="hidden" id="next7">Volgende</button>
+  <button class="next-btn hidden" id="next7" onclick="nextQuestion(8)">Volgende</button>
 </div>
 
 <div class="container hidden" id="q8">
   <div class="timer" id="timer8"></div>
   <h2>8. Een patiënt heeft plotselinge verlamming aan één kant van het lichaam. Wat doe je als eerste?</h2>
-  <p>
-    (Logisch denken - acute situatie rondom mogelijke beroerte)
-  </p>
-  <div class="options">
+  <p>(Logisch denken - acute beroerte-achtige symptomen)</p>
+  <div class="options" id="options8">
     <label><input type="radio" name="ans8" value="A"> Direct een scan laten maken</label>
     <label><input type="radio" name="ans8" value="B"> Wachten of het overgaat</label>
     <label><input type="radio" name="ans8" value="C"> Kalmeringsmiddelen geven</label>
@@ -201,16 +235,14 @@
   </div>
   <button onclick="checkAnswer(8)">Stuur</button>
   <p class="feedback" id="feedback8"></p>
-  <button onclick="nextQuestion(9)" class="hidden" id="next8">Volgende</button>
+  <button class="next-btn hidden" id="next8" onclick="nextQuestion(9)">Volgende</button>
 </div>
 
 <div class="container hidden" id="q9">
   <div class="timer" id="timer9"></div>
   <h2>9. Verward gedrag, moeite met coördinatie en ongecontroleerde bewegingen. Welk deel is waarschijnlijk aangetast?</h2>
-  <p>
-    (Observatie & patroonherkenning - coördinatieproblemen)
-  </p>
-  <div class="options">
+  <p>(Observatie & patroonherkenning - coördinatieproblemen in de hersenen)</p>
+  <div class="options" id="options9">
     <label><input type="radio" name="ans9" value="A"> Kleine hersenen</label>
     <label><input type="radio" name="ans9" value="B"> Temporaalkwab</label>
     <label><input type="radio" name="ans9" value="C"> Hersenstam</label>
@@ -218,16 +250,14 @@
   </div>
   <button onclick="checkAnswer(9)">Stuur</button>
   <p class="feedback" id="feedback9"></p>
-  <button onclick="nextQuestion(10)" class="hidden" id="next9">Volgende</button>
+  <button class="next-btn hidden" id="next9" onclick="nextQuestion(10)">Volgende</button>
 </div>
 
 <div class="container hidden" id="q10">
   <div class="timer" id="timer10"></div>
-  <h2>10. Hoe leg je een complexe diagnose uit aan een patiënt zonder medische achtergrond?</h2>
-  <p>
-    (Communicatie & empathie - je manier van uitleggen is cruciaal)
-  </p>
-  <div class="options">
+  <h2>10. Hoe leg je een complexe diagnose uit aan een patiënt die geen medische achtergrond heeft?</h2>
+  <p>(Communicatie & empathie - duidelijkheid staat voorop)</p>
+  <div class="options" id="options10">
     <label><input type="radio" name="ans10" value="A"> In eenvoudige taal, met duidelijke voorbeelden</label>
     <label><input type="radio" name="ans10" value="B"> Met medische termen, zodat ze zich slim voelen</label>
     <label><input type="radio" name="ans10" value="C"> Zo kort mogelijk, ‘time is money’</label>
@@ -235,17 +265,14 @@
   </div>
   <button onclick="checkAnswer(10)">Stuur</button>
   <p class="feedback" id="feedback10"></p>
-  <button onclick="nextQuestion(11)" class="hidden" id="next10">Volgende</button>
+  <button class="next-btn hidden" id="next10" onclick="nextQuestion(11)">Volgende</button>
 </div>
 
 <div class="container hidden" id="q11">
   <div class="timer" id="timer11"></div>
   <h2>11. Je ziet een EEG met een abnormaal patroon in de frontale kwab. Waar wijst dit op?</h2>
-  <p>
-    EEG: Elektro-encefalografie is een methode om de elektrische activiteit van de hersenen te meten.
-    (Patroonherkenning - stoornissen in de hersenactiviteit)
-  </p>
-  <div class="options">
+  <p>(Patroonherkenning - elektrische activiteit in de hersenen)</p>
+  <div class="options" id="options11">
     <label><input type="radio" name="ans11" value="A"> Epilepsie</label>
     <label><input type="radio" name="ans11" value="B"> Parkinson</label>
     <label><input type="radio" name="ans11" value="C"> Migraine</label>
@@ -253,17 +280,14 @@
   </div>
   <button onclick="checkAnswer(11)">Stuur</button>
   <p class="feedback" id="feedback11"></p>
-  <button onclick="nextQuestion(12)" class="hidden" id="next11">Volgende</button>
+  <button class="next-btn hidden" id="next11" onclick="nextQuestion(12)">Volgende</button>
 </div>
 
 <div class="container hidden" id="q12">
   <div class="timer" id="timer12"></div>
   <h2>12. Een patiënt met ernstig hoofdtrauma kan nog praten, maar herhaalt steeds dezelfde woorden. Wat is waarschijnlijk beschadigd?</h2>
-  <p>
-    Het centrum van Broca of motorische spraakcentrum ligt in de frontale kwab.
-    (Kritisch denken - herkenning van spraakproblemen)
-  </p>
-  <div class="options">
+  <p>(Kritisch denken - spraakcentrum in de frontale kwab)</p>
+  <div class="options" id="options12">
     <label><input type="radio" name="ans12" value="A"> Broca’s gebied</label>
     <label><input type="radio" name="ans12" value="B"> Hippocampus</label>
     <label><input type="radio" name="ans12" value="C"> Occipitaalkwab</label>
@@ -271,7 +295,7 @@
   </div>
   <button onclick="checkAnswer(12)">Stuur</button>
   <p class="feedback" id="feedback12"></p>
-  <button onclick="finish()" class="hidden" id="next12">Klaar</button>
+  <button class="next-btn hidden" id="next12" onclick="finish()">Klaar</button>
 </div>
 
 <div class="container hidden" id="result">
@@ -297,6 +321,20 @@ let answers = {
   10:"A",
   11:"A",
   12:"A"
+};
+
+let explanations = {
+  1:"Linkerhersenhelft bestuurt de rechterkant van het lichaam en bevat spraakgebieden.",
+  3:"Migraine is vaak gekoppeld aan hoofdpijn, misselijkheid en lichtgevoeligheid.",
+  4:"Een donkere vlek duidt meestal op een bloedprop in de frontale kwab.",
+  5:"Eerst zorgen dat de patiënt zich niet bezeert is de belangrijkste stap.",
+  6:"Empathische communicatie is cruciaal; laat de patiënt weten dat je er voor hen bent.",
+  7:"De hippocampus is vaak als eerste aangetast bij Alzheimer.",
+  8:"Bij verlamming aan één kant is een scan nodig om bijv. een beroerte uit te sluiten.",
+  9:"Kleine hersenen regelen coördinatie en balans; problemen hiermee veroorzaken ongecontroleerde bewegingen.",
+  10:"Eenvoudige taal en voorbeelden zijn belangrijk om een patiënt gerust te stellen.",
+  11:"Een abnormaal patroon in de frontale kwab op een EEG wijst vaak op epileptische activiteit.",
+  12:"Broca’s gebied is essentieel voor spraakproductie. Bij beschadiging herhaalt men soms woorden."
 };
 
 function startQuiz() {
@@ -341,21 +379,42 @@ function checkAnswer(q) {
   }
   if (!chosen) {
     alert("Je moet een antwoord selecteren!");
-    startTimer("timer"+q);
+    startTimer("timer" + q);
     return;
   }
   let fb = document.getElementById("feedback" + q);
+  let opts = document.getElementById("options" + q).getElementsByTagName("label");
+
+  for (let i = 0; i < opts.length; i++) {
+    let input = opts[i].querySelector("input");
+    opts[i].style.fontWeight = "normal";
+    opts[i].classList.remove("highlight-correct");
+  }
+
   if (answers[q]) {
     if (chosen === answers[q]) {
-      fb.textContent = "Juist!";
+      fb.innerHTML = '<span class="correct">Juist! 🎉</span> <div class="explanation">'+ explanations[q] +'</div>';
+      confetti();
       userScore++;
     } else {
-      fb.textContent = "Fout!";
+      fb.innerHTML = '<span class="wrong">Fout!</span> <div class="explanation">Het juiste antwoord is: ' 
+        + answers[q] + '.<br>' + explanations[q] + '</div>';
+      highlightCorrect(q);
     }
   } else {
     fb.textContent = "Antwoord geregistreerd.";
   }
   document.getElementById("next" + q).classList.remove("hidden");
+}
+
+function highlightCorrect(q) {
+  let opts = document.getElementById("options" + q).getElementsByTagName("label");
+  for (let i = 0; i < opts.length; i++) {
+    let input = opts[i].querySelector("input");
+    if (input.value === answers[q]) {
+      opts[i].classList.add("highlight-correct");
+    }
+  }
 }
 
 function nextQuestion(n) {
@@ -365,16 +424,61 @@ function nextQuestion(n) {
   startTimer("timer" + n);
 }
 
+/* Minimal confetti effect for fun */
+function confetti() {
+  const canvas = document.getElementById('confettiCanvas');
+  canvas.classList.remove('hidden');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  let particles = [];
+
+  for (let i = 0; i < 100; i++) {
+    particles.push({
+      x: Math.random()*canvas.width,
+      y: Math.random()*canvas.height - canvas.height,
+      r: Math.random()*6+4,
+      d: Math.random()*1 + 1,
+      color: "hsl(" + Math.random()*360 + ", 100%, 50%)",
+      tilt: Math.random()*30 - 15
+    });
+  }
+
+  let angle = 0;
+  let confettiInterval = setInterval(function(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    angle += 0.01;
+    for (let i = 0; i < particles.length; i++) {
+      let p = particles[i];
+      p.y += (Math.cos(angle + p.d) + 1 + p.r/2) / 2;
+      p.x += Math.sin(angle);
+      ctx.beginPath();
+      ctx.lineWidth = p.r;
+      ctx.strokeStyle = p.color;
+      ctx.moveTo(p.x + p.tilt + p.r/2, p.y);
+      ctx.lineTo(p.x + p.tilt, p.y + p.r/2);
+      ctx.stroke();
+      if (p.x > canvas.width || p.x < 0 || p.y > canvas.height) {
+        p.x = Math.random()*canvas.width;
+        p.y = -20;
+      }
+    }
+  }, 20);
+
+  setTimeout(function(){
+    clearInterval(confettiInterval);
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    canvas.classList.add('hidden');
+  }, 1500);
+}
+
 function finish() {
   hideQuestion(currentQuestion);
   document.getElementById("result").classList.remove("hidden");
-  document.getElementById("score").textContent = "Je eindscore is: " + userScore + " / 11";
+  document.getElementById("score").textContent = "Je eindscore is: " + userScore + " / 12";
 }
 </script>
 
 </body>
 </html>
 
-
-</body>
-</html>
